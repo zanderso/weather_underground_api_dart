@@ -6,9 +6,14 @@ Access the Weather Underground API from your Dart application
 This library makes proper use of Futures to ensure non-blocking access to the full WeatherUndergound API (http://www.wunderground.com/weather/api/)
 
 Currently has the following features enabled:
-	* Alerts
-	* Almanac
-	* Astronomy
-	* Conditions
-
-
+	* alerts
+	* almanac
+	* astronomy
+	* aonditions
+    * currenthurricane
+    * forecast
+    * forecast10day
+    * geolookup
+    * history
+    * hourly
+    * hourly10day

@@ -8,10 +8,17 @@ class WeatherUnderground {
   String _apiKey;
   String _locQuery;
   HttpClient _client;
-  Map _apiMap = {'conditions': 'current_observation',
-                 'alerts': 'alerts',
+  Map _apiMap = {'alerts': 'alerts',
                  'almanac': 'almanac',
-                 'astronomy': 'moon_phase'};
+                 'astronomy': 'moon_phase',
+                 'conditions': 'current_observation',
+                 'currenthurricane': 'currenthurricane',
+                 'forecast': 'forecast',
+                 'forecast10day': 'forecast',
+                 'geolookup': 'location',
+                 'history': 'history',
+                 'hourly': 'hourly_forecast',
+                 'hourly10day': 'hourly_forecast'};
   
   void setLocationQuery(String locationQuery) {
     _locQuery = locationQuery;
@@ -27,10 +34,6 @@ class WeatherUnderground {
     return makeAPICall('almanac');
   }
   
-  Future getConditions() {
-    return makeAPICall('conditions');
-  }
-  
   Future getAlerts() {
     return makeAPICall('alerts');
   }
@@ -39,6 +42,48 @@ class WeatherUnderground {
     return makeAPICall('astronomy');
   }
   
+  Future getConditions() {
+    return makeAPICall('conditions');
+  }
+  
+  Future getCurrentHurricane() {
+    return makeAPICall('currenthurricane');
+  }
+  
+  Future getForecast() {
+    return makeAPICall('forecast');
+  }
+  
+  Future getForecast10Day() {
+    return makeAPICall('forecast');    
+  }
+  
+  Future getGeoLookup() {
+    return makeAPICall('geolookup');
+  }
+  
+  Future getHistory(DateTime when) {
+    String s = "";
+    s = when.year.toString();
+    if(when.month < 10) {
+      s = s + "0";
+    }
+    s = s + when.month.toString();
+    if(when.day < 10) {
+      s = s + "0";
+    }
+    s = s + when.day.toString();
+    return makeAPICall('history_${s}');
+  }
+  
+  Future getHourly() {
+    return makeAPICall('hourly');
+  }
+  
+  Future getHourly10Day() {
+    return makeAPICall('hourly10day');
+  }  
+
   Future makeAPICall(String apiName) {
     Completer completer = new Completer();
     
