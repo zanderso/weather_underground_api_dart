@@ -7,7 +7,7 @@ void main() {
   print("WeatherUnderground Tests!");
    
   // You will need to place your own weather undergound API key in place of the x's
-  wu = new WeatherUnderground("xxxxxxxxxxxxxxxx", "84096");
+  wu = new WeatherUnderground("xxx", "84096");
 
 /*  
   wu.getConditions().then((LinkedHashMap val) {
