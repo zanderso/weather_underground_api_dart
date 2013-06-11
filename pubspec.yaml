@@ -1,4 +1,7 @@
-name: WeatherUnderground
-description: A sample command-line application
+name: weather_underground_api
+version: 0.0.1
+author: Ira Burton
+description: A Dart interface to the WeatherUnderground API
+
 #dependencies:
 #  unittest: any
