@@ -14,67 +14,67 @@ void main() {
     print(val.toString());
   } );
 /*   
-  wu.getAlerts().then((List val) {
+  wu.getAlerts().then((var val) {
     print(val.toString());
   } );
   
-  wu.getAlmanac().then((LinkedHashMap val) {
+  wu.getAlmanac().then((var val) {
     print(val.toString());
   } );
   
-  wu.getAstronomy().then((LinkedHashMap val) {
+  wu.getAstronomy().then((var val) {
     print(val.toString());
   } );  
   
-  wu.getCurrentHurricane().then((List val) {
+  wu.getCurrentHurricane().then((var val) {
     print(val.toString());
   } );    
 
-  wu.getForecast().then((LinkedHashMap val) {
+  wu.getForecast().then((var val) {
     print(val.toString());
   } ); 
   
-  wu.getForecast10Day().then((LinkedHashMap val) {
+  wu.getForecast10Day().then((var val) {
     print(val.toString());
   } );    
 
-  wu.getGeoLookup().then((LinkedHashMap val) {
+  wu.getGeoLookup().then((var val) {
     print(val.toString());
   } );
     
-  wu.getHistory(new DateTime(2000,1,1)).then((LinkedHashMap val) {
+  wu.getHistory(new DateTime(2000,1,1)).then((var val) {
     print(val.toString());
   } );
 
-  wu.getHourly().then((List val) {
+  wu.getHourly().then((var val) {
     print(val.toString());
   } );  
 
-  wu.getHourly10Day().then((List val) {
+  wu.getHourly10Day().then((var val) {
     print(val.toString());
   } );   
 
-  wu.getPlanner(7,11,7,15).then((LinkedHashMap val) {
+  wu.getPlanner(7,11,7,15).then((var val) {
     print(val.toString());
   } );   
 
-  wu.getRawTide().then((LinkedHashMap val) {
+  wu.getRawTide().then((var val) {
     print(val.toString());
   } );  
   
-  wu.getSatellite().then((LinkedHashMap val) {
+  wu.getSatellite().then((var val) {
     print(val.toString());
   } );  
 
-  wu.getTide().then((LinkedHashMap val) {
+  wu.getTide().then((var val) {
     print(val.toString());
   } );   
 
-  wu.getWebcams().then((List val) {
+  wu.getWebcams().then((var val) {
     print(val.toString());
   } );    
    
-  wu.getYesterday().then((LinkedHashMap val) {
+  wu.getYesterday().then((var val) {
     print(val.toString());
   } );    
   */
