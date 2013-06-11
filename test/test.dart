@@ -9,11 +9,11 @@ void main() {
   // You will need to place your own weather undergound API key in place of the x's
   wu = new WeatherUnderground("xxx", "84096");
 
- 
-  wu.getConditions().then((LinkedHashMap val) {
+
+  wu.getConditions().then((var val) {
     print(val.toString());
   } );
-  
+/*   
   wu.getAlerts().then((List val) {
     print(val.toString());
   } );
@@ -77,5 +77,5 @@ void main() {
   wu.getYesterday().then((LinkedHashMap val) {
     print(val.toString());
   } );    
-  
+  */
 }

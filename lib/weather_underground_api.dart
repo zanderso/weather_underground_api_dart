@@ -3,7 +3,6 @@ library weather_underground_api;
 import "dart:io";
 import "dart:json";
 import "dart:async";
-import "dart:collection";
 
 class WeatherUnderground {
   const _apiURL= "http://api.wunderground.com/api/";
@@ -144,10 +143,13 @@ class WeatherUnderground {
       .then((HttpClientResponse response) {
         response.transform(new StringDecoder()).toList().then((data) {
           String body = data.join('');
-          LinkedHashMap parsedList = parse(body);
-          String dataKey = parsedList['response']['features'].keys.first; 
-          print(parsedList.toString()); 
-          completer.complete(parsedList[_apiMap[dataKey]]);       
+          var parsedList = parse(body);
+          if(parsedList['response']['error'] != null) {
+            completer.complete(null);
+          } else {
+            String dataKey = parsedList['response']['features'].keys.first; 
+            completer.complete(parsedList[_apiMap[dataKey]]);
+          }
         });        
       });
     return completer.future;
