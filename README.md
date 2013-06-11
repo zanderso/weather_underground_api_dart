@@ -33,5 +33,7 @@ Also, error checking is abysmal.  All to be improved soon.
 0.1.2 - Fixed a left behind debug print statement
       - Added very basic error checking for malformed server request URI's
       - Removed strong typing for API results
+      
 0.1.1 - Minor Cosmetic Changes
+
 0.1.0 - Initial Revision
