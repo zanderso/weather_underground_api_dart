@@ -18,7 +18,13 @@ class WeatherUnderground {
                  'geolookup': 'location',
                  'history': 'history',
                  'hourly': 'hourly_forecast',
-                 'hourly10day': 'hourly_forecast'};
+                 'hourly10day': 'hourly_forecast',
+                 'planner': 'trip',
+                 'rawtide': 'rawtide',
+                 'satellite': 'satellite',
+                 'tide': 'tide',
+                 'webcams': 'webcams',
+                 'yesterday': 'history'};
   
   void setLocationQuery(String locationQuery) {
     _locQuery = locationQuery;
@@ -83,7 +89,48 @@ class WeatherUnderground {
   Future getHourly10Day() {
     return makeAPICall('hourly10day');
   }  
+  
+  Future getPlanner(int startMonth, int startDay, int endMonth, int endDay) {
+    String s = "";
+    if(startMonth < 10) {
+      s = s + "0";
+    }
+    s = s + startMonth.toString();
+    if(startDay < 10) {
+      s = s + "0";
+    }
+    s = s + startDay.toString();    
+    if(endMonth < 10) {
+      s = s + "0";
+    }
+    s = s + endMonth.toString();
+    if(endDay < 10) {
+      s = s + "0";
+    }
+    s = s + endDay.toString();
+    return makeAPICall('planner_${s}');
+  }
 
+  Future getRawTide() {
+    return makeAPICall('rawtide');
+  }    
+
+  Future getSatellite() {
+    return makeAPICall('satellite');
+  }    
+
+  Future getTide() {
+    return makeAPICall('tide');
+  }      
+
+  Future getWebcams() {
+    return makeAPICall('webcams');
+  }        
+
+  Future getYesterday() {
+    return makeAPICall('yesterday');
+  }        
+  
   Future makeAPICall(String apiName) {
     Completer completer = new Completer();
     

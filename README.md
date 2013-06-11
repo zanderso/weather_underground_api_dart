@@ -17,3 +17,15 @@ Currently has the following features enabled:
 *   history
 *   hourly
 *   hourly10day
+*   planner
+*   rawtide
+*   satellite
+*   tide
+*   webcams
+*   yesterday
+
+The following features have not been added yet:
+*   radar
+*   satellite
+*   radar + satellite
+*   autocomplete
