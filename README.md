@@ -1,4 +1,4 @@
-weather_underground_api_dart
+weather_underground_api
 ============================
 
 Access the Weather Underground API from your Dart application
@@ -29,3 +29,5 @@ The following features have not been added yet:
 *   satellite
 *   radar + satellite
 *   autocomplete
+
+Also, error checking is abysmal.  All to be improved soon.
