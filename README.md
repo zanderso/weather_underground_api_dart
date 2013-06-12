@@ -27,7 +27,20 @@ The following features have not been added yet:
 *   radar + satellite
 *   autocomplete
 
-Also, error checking is abysmal.  All to be improved soon.
+Also, error checking is abysmal.  All to be improved soon.  
+
+### Notes ###
+If your API key does not include access to a particular function, the WeatherUndergound returns no indication that access is not allowed, other than a complete data structure with no values.  
+This library also does no checking to ensure values provided from WeatherUndergound are valid.  This will be addressed in a later version
+
+### TODO ###
+-   Implement error handling
+-   Check that returned values are valid
+-   Implement radar
+-   Implement satellite
+-   Implement radar + satellite
+-   Implement autocomplete
+-   Modify returned values to intended types instead of strings
 
 ### Change Log ###
 0.1.2 - Fixed a left behind debug print statement
