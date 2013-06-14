@@ -4,6 +4,24 @@ import "dart:io";
 import "dart:json";
 import "dart:async";
 
+class QueryNotFound implements Exception {
+  final String msg;
+  const QueryNotFound([this.msg]);
+  String toString() => msg == null ? 'QueryNotFound' : 'QueryNotFound: ${msg}';
+}
+
+class KeyNotFound implements Exception {
+  final String msg;
+  const KeyNotFound([this.msg]);
+  String toString() => msg == null ? 'KeyNotFound' : 'KeyNotFound: ${msg}';
+}
+
+class UnknownException implements Exception {
+  final String msg;
+  const UnknownException([this.msg]);
+  String toString() => msg == null ? 'UnknownException' : 'UnknownException: ${msg}';
+}
+
 class WeatherUnderground {
   static const _apiURL= "http://api.wunderground.com/api/";
   String _apiKey;
@@ -145,7 +163,13 @@ class WeatherUnderground {
           String body = data.join('');
           var parsedList = parse(body);
           if(parsedList['response']['error'] != null) {
-            completer.complete(null);
+            if(parsedList['response']['error']['type'] == 'keynotfound') {
+              throw new KeyNotFound(parsedList['response']['error']['description']);
+            } else if(parsedList['response']['error']['type'] == 'querynotfound') {
+              throw new QueryNotFound(parsedList['response']['error']['description']);
+            } else {
+              throw new UnknownException(); 
+            }
           } else {
             String dataKey = parsedList['response']['features'].keys.first; 
             completer.complete(parsedList[_apiMap[dataKey]]);
