@@ -12,12 +12,13 @@ void main() {
 
   wu.getConditions().then((var val) {
     print(val.toString());
-  } );
-/*   
+  });
+  
   wu.getAlerts().then((var val) {
     print(val.toString());
   } );
-  
+
+/*  
   wu.getAlmanac().then((var val) {
     print(val.toString());
   } );

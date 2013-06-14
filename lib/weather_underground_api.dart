@@ -141,7 +141,7 @@ class WeatherUnderground {
         return request.close();
       })
       .then((HttpClientResponse response) {
-        response.transform(new StringDecoder()).toList().then((data) {
+        response.transform(new StringDecoder()).toList().then((data) {          
           String body = data.join('');
           var parsedList = parse(body);
           if(parsedList['response']['error'] != null) {
