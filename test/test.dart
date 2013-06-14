@@ -1,4 +1,4 @@
-import "../lib/weather_underground_api.dart";
+import "package:weather_underground_api/weather_underground_api.dart";
 import "dart:collection";
 
 WeatherUnderground wu;
