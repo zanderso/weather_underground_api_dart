@@ -5,7 +5,7 @@ import "dart:json";
 import "dart:async";
 
 class WeatherUnderground {
-  const _apiURL= "http://api.wunderground.com/api/";
+  static const _apiURL= "http://api.wunderground.com/api/";
   String _apiKey;
   String _locQuery;
   HttpClient _client;
