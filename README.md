@@ -1,5 +1,6 @@
 ### What is this thing?
-This is a library for providing access to the Weather Underground API to [Dart](http://www.dartlang.org/) applications.  It provides for asynchronous access to the REST API for dart:io based applications, support for dart:html is on the road map for release in June.
+This is a library for providing access to the Weather Underground API to [Dart](http://www.dartlang.org/) applications.  
+It provides for asynchronous access to the REST API for dart:io based applications, support for dart:html is on the road map for release in June.
 
 ### Where can I get it?
 You can add it to your project directly in the Dart Editor by including [weather_underground_api](http://pub.dartlang.org/packages/weather_underground_api) in your project.  You can also contribute to the project via [github](https://github.com/iburton/weather_underground_api_dart).
@@ -28,6 +29,7 @@ For now, the following exceptions may be thrown:
 
 ### TODO
 - Check that returned values are valid.  This is to catch the case where a request is made for a feature not supported by the API key license level.  Unfortunately, this does not appear to be easily discerned from the data returned by WU.
+- Implement dart:html library support (in addition to dart:io)
 - Implement radar
 - Implement satellite
 - Implement radar + satellite
