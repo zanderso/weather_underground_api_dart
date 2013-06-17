@@ -1,5 +1,7 @@
 Access the Weather Underground API from your Dart application
 
+Homepage: [http://iburton.github.io/weather_underground_api_dart/]
+
 This library makes proper use of Futures to ensure non-blocking access to the full WeatherUndergound API (http://www.wunderground.com/weather/api/)
 
 Currently has the following features enabled:  alerts, almanac, astronomy, conditions, currenthurricane, forecast, forecast10day, geolookup, history, hourly, hourly10day, planner, rawtide, satellite, tide, webcams, yesterday. 
@@ -19,7 +21,7 @@ For now, the following exceptions may be thrown:
 - Per the WeatherUndergound Terms Of Service, the WU logo must be included with a credit line where the returned data is displayed.
 
 ### TODO ###
-- Check that returned values are valid
+- Check that returned values are valid.  This is to catch the case where a request is made for a feature not supported by the API key license level.  Unfortunately, this does not appear to be easily discerned from the data returned by WU.
 - Implement radar
 - Implement satellite
 - Implement radar + satellite

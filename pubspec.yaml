@@ -2,7 +2,7 @@ name: weather_underground_api
 version: 0.1.2
 author: Ira Burton <ira.burton@gmail.com>
 description: A Dart interface to the WeatherUnderground API
-homepage: https://github.com/iburton/weather_underground_api_dart
+homepage: http://iburton.github.io/weather_underground_api_dart/
 
 #dependencies:
 #  unittest: any
