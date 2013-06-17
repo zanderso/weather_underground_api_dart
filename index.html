@@ -59,6 +59,67 @@
 </pre></div>
 
 <h3>
+<a name="exceptions" class="anchor" href="#exceptions"><span class="octicon octicon-link"></span></a>Exceptions</h3>
+
+<p>There are currently three exceptions that this API can throw.  Unfortuantely, the WeatherUnderground API documentation does not define any error return values, though it does return some, so more may be added as I come across them.
+For now, the following exceptions may be thrown:</p>
+
+<ul>
+<li>QueryNotFound - Raised if the defined query string does not return an appropriate result for the assigned query.</li>
+<li>KeyNotFound - Raised if the API key provided at instantiation is not valid at WeatherUnderground.</li>
+<li>UnknownException - This should not be seen in the wild, but is provided in the likely case that new errors are discovered.  If you find this being thrown, let me know so I can add more code around it.</li>
+</ul><h3>
+<a name="notes" class="anchor" href="#notes"><span class="octicon octicon-link"></span></a>Notes</h3>
+
+<ul>
+<li>If your API key does not include access to a particular function, the WeatherUndergound returns no indication that access is not allowed, other than a complete data structure with no values.<br>
+</li>
+<li>This library also does no checking to ensure values provided from WeatherUndergound are valid.  This will be addressed in a later version.</li>
+<li>Per the WeatherUndergound Terms Of Service, the WU logo must be included with a credit line where the returned data is displayed.</li>
+</ul><h3>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h3>
+
+<ul>
+<li>Check that returned values are valid.  This is to catch the case where a request is made for a feature not supported by the API key license level.  Unfortunately, this does not appear to be easily discerned from the data returned by WU.</li>
+<li>Implement radar</li>
+<li>Implement satellite</li>
+<li>Implement radar + satellite</li>
+<li>Implement autocomplete</li>
+<li>Modify returned values to intended types instead of strings</li>
+<li>Implement multiple feature requests</li>
+<li>Include code samples in documentation</li>
+</ul><h3>
+<a name="change-log" class="anchor" href="#change-log"><span class="octicon octicon-link"></span></a>Change Log</h3>
+
+<ul>
+<li>0.1.3
+
+<ul>
+<li>Added better error handling and documentation</li>
+</ul>
+</li>
+<li>0.1.2 
+
+<ul>
+<li>Fixed a left behind debug print statement</li>
+<li>Added very basic error checking for malformed server request URI's</li>
+<li>Removed strong typing for API results<br>
+</li>
+</ul>
+</li>
+<li>0.1.1 
+
+<ul>
+<li>Minor Cosmetic Changes</li>
+</ul>
+</li>
+<li>0.1.0 
+
+<ul>
+<li>Initial Revision</li>
+</ul>
+</li>
+</ul><h3>
 <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
 <p>To date, all code has been written by Ira Burton (<a href="https://github.com/iburton" class="user-mention">@iburton</a>), a very rookie Dart programmer.  If something is not working correctly, it is likely because he made some sort of dunderheaded mistake.  Please feel free to thoroughly bash him for all mistakes so he can learn the right way to do it.  There is no pride of authorship here.</p>
