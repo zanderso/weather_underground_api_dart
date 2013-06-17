@@ -31,7 +31,7 @@ For now, the following exceptions may be thrown:
 - Include code samples in documentation
 
 ### Change Log ###
-- 0.1.3 (Not yet released)
+- 0.1.3
     - Added better error handling and documentation
 - 0.1.2 
     - Fixed a left behind debug print statement
