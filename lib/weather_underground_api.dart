@@ -22,11 +22,19 @@ class UnknownException implements Exception {
   String toString() => msg == null ? 'UnknownException' : 'UnknownException: ${msg}';
 }
 
+class TimeoutException implements Exception {
+  final String msg;
+  const TimeoutException([this.msg]);
+  String toString() => msg == null ? 'TimeoutException' : 'TimeoutException: ${msg}';
+}
+
 class WeatherUnderground {
   static const _apiURL= "http://api.wunderground.com/api/";
   String _apiKey;
   String _locQuery;
   HttpClient _client;
+  int _timeout;
+  
   Map _apiMap = {'alerts': 'alerts',
                  'almanac': 'almanac',
                  'astronomy': 'moon_phase',
@@ -49,10 +57,15 @@ class WeatherUnderground {
     _locQuery = locationQuery;
   }
   
+  void setTimeout(int timeout) {
+    _timeout = timeout;
+  }
+  
   WeatherUnderground(String apiKey, String locationQuery) {
     _apiKey = apiKey;
     setLocationQuery(locationQuery);
     _client = new HttpClient();
+    _timeout = 2000;
   }
   
   Future getAlmanac() {
@@ -150,6 +163,23 @@ class WeatherUnderground {
     return makeAPICall('yesterday');
   }        
   
+  Future timeout(Future input, int milliseconds) {
+    var completer = new Completer();
+    var timer = new Timer(new Duration(milliseconds: milliseconds), () {
+      completer.completeError(new TimeoutException());
+    });
+    input.then((value) {
+      if (completer.isCompleted) return;
+      timer.cancel();
+      completer.complete(value);
+    }).catchError((e) {
+      if (completer.isCompleted) return;
+      timer.cancel();
+      completer.completeError(e);
+    });
+    return completer.future;
+  } 
+  
   Future makeAPICall(String apiName) {
     Completer completer = new Completer();
     
@@ -176,6 +206,6 @@ class WeatherUnderground {
           }
         });        
       });
-    return completer.future;
+    return timeout(completer.future, _timeout);
   }
 }

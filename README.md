@@ -14,13 +14,13 @@ wu.getConditions().then((var val) {
   print(val.toString());
 });
 ```
-
 ### Exceptions
 There are currently three exceptions that this API can throw.  Unfortuantely, the WeatherUnderground API documentation does not define any error return values, though it does return some, so more may be added as I come across them.
 For now, the following exceptions may be thrown:
 - QueryNotFound - Raised if the defined query string does not return an appropriate result for the assigned query.
 - KeyNotFound - Raised if the API key provided at instantiation is not valid at WeatherUnderground.
 - UnknownException - This should not be seen in the wild, but is provided in the likely case that new errors are discovered.  If you find this being thrown, let me know so I can add more code around it.
+- TimeoutException - Occurs if an API request takes longer than the timout (default 2000 ms or 2 seconds) to complete.
 
 ### Notes
 - If your API key does not include access to a particular function, the WeatherUndergound returns no indication that access is not allowed, other than a complete data structure with no values.  
@@ -39,6 +39,8 @@ For now, the following exceptions may be thrown:
 - Include code samples in documentation
 
 ### Change Log
+- 0.1.4 (Not released yet)
+    - Added timeout functionality to handle requests that never come back
 - 0.1.3
     - Added better error handling and documentation
 - 0.1.2 

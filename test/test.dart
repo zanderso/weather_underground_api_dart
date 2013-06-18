@@ -8,6 +8,7 @@ void main() {
    
   // You will need to place your own weather undergound API key in place of the x's
   wu = new WeatherUnderground("xxx", "84096");
+  wu.setTimeout(1900);
 
 
   wu.getConditions().then((var val) {
