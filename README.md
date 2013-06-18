@@ -38,7 +38,7 @@ For now, the following exceptions may be thrown:
 - Include code samples in documentation
 
 ### Change Log
-- 0.1.4 (Not released yet)
+- 0.1.4
     - Added timeout functionality to handle requests that never come back
     - Autocomplete API implemented
 - 0.1.3
