@@ -10,20 +10,22 @@ void main() {
   wu = new WeatherUnderground("xxx", "84096");
   wu.setTimeout(1900);
 
-
+  wu.getAutocomplete("Salt Lake City").then((var val) {
+    print(val.toString());
+  });
+  
   wu.getConditions().then((var val) {
     print(val.toString());
   }).catchError((e) {
     print("An error occurred: ${e.toString()}");
   });
-  
+/*  
   wu.getAlerts().then((var val) {
     print(val.toString());
   }).catchError((e) {
     print("An error occurred: ${e.toString()}");
   });
-
-/*  
+  
   wu.getAlmanac().then((var val) {
     print(val.toString());
   } ).catchError((e) {

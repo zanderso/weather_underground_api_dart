@@ -33,7 +33,6 @@ For now, the following exceptions may be thrown:
 - Implement radar
 - Implement satellite
 - Implement radar + satellite
-- Implement autocomplete
 - Modify returned values to intended types instead of strings
 - Implement multiple feature requests
 - Include code samples in documentation
@@ -41,6 +40,7 @@ For now, the following exceptions may be thrown:
 ### Change Log
 - 0.1.4 (Not released yet)
     - Added timeout functionality to handle requests that never come back
+    - Autocomplete API implemented
 - 0.1.3
     - Added better error handling and documentation
 - 0.1.2 

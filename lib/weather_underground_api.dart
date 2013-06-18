@@ -30,6 +30,7 @@ class TimeoutException implements Exception {
 
 class WeatherUnderground {
   static const _apiURL= "http://api.wunderground.com/api/";
+  static const _autocompleteURL= "http://autocomplete.wunderground.com/";
   String _apiKey;
   String _locQuery;
   HttpClient _client;
@@ -69,35 +70,35 @@ class WeatherUnderground {
   }
   
   Future getAlmanac() {
-    return makeAPICall('almanac');
+    return makeAPIKeyCall('almanac');
   }
   
   Future getAlerts() {
-    return makeAPICall('alerts');
+    return makeAPIKeyCall('alerts');
   }
   
   Future getAstronomy() {
-    return makeAPICall('astronomy');
+    return makeAPIKeyCall('astronomy');
   }
   
   Future getConditions() {
-    return makeAPICall('conditions');
+    return makeAPIKeyCall('conditions');
   }
   
   Future getCurrentHurricane() {
-    return makeAPICall('currenthurricane');
+    return makeAPIKeyCall('currenthurricane');
   }
   
   Future getForecast() {
-    return makeAPICall('forecast');
+    return makeAPIKeyCall('forecast');
   }
   
   Future getForecast10Day() {
-    return makeAPICall('forecast');    
+    return makeAPIKeyCall('forecast');    
   }
   
   Future getGeoLookup() {
-    return makeAPICall('geolookup');
+    return makeAPIKeyCall('geolookup');
   }
   
   Future getHistory(DateTime when) {
@@ -111,15 +112,15 @@ class WeatherUnderground {
       s = s + "0";
     }
     s = s + when.day.toString();
-    return makeAPICall('history_${s}');
+    return makeAPIKeyCall('history_${s}');
   }
   
   Future getHourly() {
-    return makeAPICall('hourly');
+    return makeAPIKeyCall('hourly');
   }
   
   Future getHourly10Day() {
-    return makeAPICall('hourly10day');
+    return makeAPIKeyCall('hourly10day');
   }  
   
   Future getPlanner(int startMonth, int startDay, int endMonth, int endDay) {
@@ -140,27 +141,27 @@ class WeatherUnderground {
       s = s + "0";
     }
     s = s + endDay.toString();
-    return makeAPICall('planner_${s}');
+    return makeAPIKeyCall('planner_${s}');
   }
 
   Future getRawTide() {
-    return makeAPICall('rawtide');
+    return makeAPIKeyCall('rawtide');
   }    
 
   Future getSatellite() {
-    return makeAPICall('satellite');
+    return makeAPIKeyCall('satellite');
   }    
 
   Future getTide() {
-    return makeAPICall('tide');
+    return makeAPIKeyCall('tide');
   }      
 
   Future getWebcams() {
-    return makeAPICall('webcams');
+    return makeAPIKeyCall('webcams');
   }        
 
   Future getYesterday() {
-    return makeAPICall('yesterday');
+    return makeAPIKeyCall('yesterday');
   }        
   
   Future timeout(Future input, int milliseconds) {
@@ -180,7 +181,26 @@ class WeatherUnderground {
     return completer.future;
   } 
   
-  Future makeAPICall(String apiName) {
+  Future getAutocomplete(String acquery) {
+    Completer completer = new Completer();
+    
+    String query = _autocompleteURL + "aq?query=" + acquery;        
+    
+    _client.getUrl(Uri.parse(query))
+      .then((HttpClientRequest request) {
+        return request.close();
+      })
+      .then((HttpClientResponse response) {
+        response.transform(new StringDecoder()).toList().then((data) {          
+          String body = data.join('');
+          var parsedList = parse(body);
+          completer.complete(parsedList['RESULTS']);
+        });        
+      });
+    return timeout(completer.future, _timeout);
+  }
+  
+  Future makeAPIKeyCall(String apiName) {
     Completer completer = new Completer();
     
     String query = _apiURL + _apiKey + "/" + apiName + "/q/" + _locQuery + ".json";
