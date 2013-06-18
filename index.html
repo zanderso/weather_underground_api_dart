@@ -69,6 +69,7 @@ For now, the following exceptions may be thrown:</p>
 <li>QueryNotFound - Raised if the defined query string does not return an appropriate result for the assigned query.</li>
 <li>KeyNotFound - Raised if the API key provided at instantiation is not valid at WeatherUnderground.</li>
 <li>UnknownException - This should not be seen in the wild, but is provided in the likely case that new errors are discovered.  If you find this being thrown, let me know so I can add more code around it.</li>
+<li>TimeoutException - Occurs if an API request takes longer than the timout (default 2000 ms or 2 seconds) to complete.</li>
 </ul><h3>
 <a name="notes" class="anchor" href="#notes"><span class="octicon octicon-link"></span></a>Notes</h3>
 
@@ -86,7 +87,6 @@ For now, the following exceptions may be thrown:</p>
 <li>Implement radar</li>
 <li>Implement satellite</li>
 <li>Implement radar + satellite</li>
-<li>Implement autocomplete</li>
 <li>Modify returned values to intended types instead of strings</li>
 <li>Implement multiple feature requests</li>
 <li>Include code samples in documentation</li>
@@ -94,6 +94,13 @@ For now, the following exceptions may be thrown:</p>
 <a name="change-log" class="anchor" href="#change-log"><span class="octicon octicon-link"></span></a>Change Log</h3>
 
 <ul>
+<li>0.1.4
+
+<ul>
+<li>Added timeout functionality to handle requests that never come back</li>
+<li>Autocomplete API implemented</li>
+</ul>
+</li>
 <li>0.1.3
 
 <ul>
