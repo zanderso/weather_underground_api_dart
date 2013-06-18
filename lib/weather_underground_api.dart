@@ -4,16 +4,16 @@ import "dart:io";
 import "dart:json";
 import "dart:async";
 
-class QueryNotFound implements Exception {
+class QueryNotFoundException implements Exception {
   final String msg;
-  const QueryNotFound([this.msg]);
-  String toString() => msg == null ? 'QueryNotFound' : 'QueryNotFound: ${msg}';
+  const QueryNotFoundException([this.msg]);
+  String toString() => msg == null ? 'QueryNotFoundException' : 'QueryNotFoundException: ${msg}';
 }
 
-class KeyNotFound implements Exception {
+class KeyNotFoundException implements Exception {
   final String msg;
-  const KeyNotFound([this.msg]);
-  String toString() => msg == null ? 'KeyNotFound' : 'KeyNotFound: ${msg}';
+  const KeyNotFoundException([this.msg]);
+  String toString() => msg == null ? 'KeyNotFoundException' : 'KeyNotFoundException: ${msg}';
 }
 
 class UnknownException implements Exception {
@@ -28,6 +28,11 @@ class TimeoutException implements Exception {
   String toString() => msg == null ? 'TimeoutException' : 'TimeoutException: ${msg}';
 }
 
+/**
+ * Interface to the WeatherUnderground API.
+ * 
+ * This class implements an interface to the WeatherUnderground API defined at http://www.wunderground.com/weather/api/d/docs.
+ */
 class WeatherUnderground {
   static const _apiURL= "http://api.wunderground.com/api/";
   static const _autocompleteURL= "http://autocomplete.wunderground.com/";
@@ -54,53 +59,74 @@ class WeatherUnderground {
                  'webcams': 'webcams',
                  'yesterday': 'history'};
   
+   /// Set the query string for this instance.
+   /// 
+   /// Unfortunately, WU does not define this very well, as a result, the safest thing is to provide
+   /// a query result string from an autocomplete, as it should be reliable.
   void setLocationQuery(String locationQuery) {
     _locQuery = locationQuery;
   }
   
+  /// Set the default time for HTTP requests to timeout if no response is received.
+  /// This value is provided in milliseconds and has a default value of 2000 (2 seconds.)
   void setTimeout(int timeout) {
     _timeout = timeout;
   }
   
-  WeatherUnderground(String apiKey, String locationQuery) {
+  /// Constructor
+  /// Takes one required parameter which is the API key which must be attained from WeatherUnderground.
+  /// Also, a second optional paramter indicating the location query may be provided (and in most cases should be).
+  WeatherUnderground(String apiKey, [String locationQuery]) {
+    locationQuery = locationQuery == null ? "" : locationQuery;
     _apiKey = apiKey;
     setLocationQuery(locationQuery);
     _client = new HttpClient();
     _timeout = 2000;
   }
   
-  Future getAlmanac() {
-    return makeAPIKeyCall('almanac');
-  }
-  
+  /// Returns any severe alerts issued for the queried location (US an EU only.)
+  /// Uses NWS VTEC codes.
   Future getAlerts() {
-    return makeAPIKeyCall('alerts');
+    return _makeAPIKeyCall('alerts');
+  }  
+  
+  /// Historical average temperature for TODAY.
+  Future getAlmanac() {
+    return _makeAPIKeyCall('almanac');
   }
   
+  /// Returns the moon phase, sunrise, and sunset times.
   Future getAstronomy() {
-    return makeAPIKeyCall('astronomy');
+    return _makeAPIKeyCall('astronomy');
   }
   
+  /// Returns comprehensive weather information for right now.
   Future getConditions() {
-    return makeAPIKeyCall('conditions');
+    return _makeAPIKeyCall('conditions');
   }
   
+  /// Returns information about current hurricanes and tropical storms.
   Future getCurrentHurricane() {
-    return makeAPIKeyCall('currenthurricane');
+    return _makeAPIKeyCall('currenthurricane');
   }
   
+  /// Returns a summary of the weather for the next 3 days.
   Future getForecast() {
-    return makeAPIKeyCall('forecast');
+    return _makeAPIKeyCall('forecast');
   }
   
+  /// Returns a summary of the weather for the next 10 days.
   Future getForecast10Day() {
-    return makeAPIKeyCall('forecast');    
+    return _makeAPIKeyCall('forecast');    
   }
   
+  /// Returns geographic information based on the current query.
   Future getGeoLookup() {
-    return makeAPIKeyCall('geolookup');
+    return _makeAPIKeyCall('geolookup');
   }
   
+  /// Returns a summary of the observed weather for a specific date.
+  /// Requires a DateTime object, but only the year, month, and day fields are used.
   Future getHistory(DateTime when) {
     String s = "";
     s = when.year.toString();
@@ -112,17 +138,22 @@ class WeatherUnderground {
       s = s + "0";
     }
     s = s + when.day.toString();
-    return makeAPIKeyCall('history_${s}');
+    return _makeAPIKeyCall('history_${s}');
   }
   
+  /// Provides hourly data information.
   Future getHourly() {
-    return makeAPIKeyCall('hourly');
+    return _makeAPIKeyCall('hourly');
   }
   
+  /// Provides hourly data for the next 10 days.
   Future getHourly10Day() {
-    return makeAPIKeyCall('hourly10day');
+    return _makeAPIKeyCall('hourly10day');
   }  
   
+  /// Returns a weather summary based on histroical information between the two specified dates.
+  /// The dates must be no more than 30 days apart.
+  /// Takes 4 numeric parameters represending the start and end month and days.
   Future getPlanner(int startMonth, int startDay, int endMonth, int endDay) {
     String s = "";
     if(startMonth < 10) {
@@ -141,29 +172,38 @@ class WeatherUnderground {
       s = s + "0";
     }
     s = s + endDay.toString();
-    return makeAPIKeyCall('planner_${s}');
+    return _makeAPIKeyCall('planner_${s}');
   }
 
+  /// Raw tidal information for use in graphing etc.
   Future getRawTide() {
-    return makeAPIKeyCall('rawtide');
+    return _makeAPIKeyCall('rawtide');
   }    
 
+  /// Returns a URL link to .gif visual and ifrared satellite images.
   Future getSatellite() {
-    return makeAPIKeyCall('satellite');
+    return _makeAPIKeyCall('satellite');
   }    
 
+  /// Current tidal information.
   Future getTide() {
-    return makeAPIKeyCall('tide');
+    return _makeAPIKeyCall('tide');
   }      
 
+  /// Returns the locations of nearby PWS andd URLS for their webcam images.
   Future getWebcams() {
-    return makeAPIKeyCall('webcams');
+    return _makeAPIKeyCall('webcams');
   }        
 
+  /// Returns a summary of the observed weather history for yesterday.
   Future getYesterday() {
-    return makeAPIKeyCall('yesterday');
+    return _makeAPIKeyCall('yesterday');
   }        
   
+  /// Because once in a great while these requests never complete, and it is bad form with a future
+  /// to never respond, this function can wrap a future and throw a TimeoutException if it fails to
+  /// complete before the timer expires.
+  /// Takes two parameters, a Future to wrap and the number of milliseconds to expire in.
   Future timeout(Future input, int milliseconds) {
     var completer = new Completer();
     var timer = new Timer(new Duration(milliseconds: milliseconds), () {
@@ -181,6 +221,8 @@ class WeatherUnderground {
     return completer.future;
   } 
   
+  /// Handles making the call to the autocomplete API
+  /// Takes one required paramter representing the string to search on.
   Future getAutocomplete(String acquery) {
     Completer completer = new Completer();
     
@@ -200,7 +242,10 @@ class WeatherUnderground {
     return timeout(completer.future, _timeout);
   }
   
-  Future makeAPIKeyCall(String apiName) {
+  /// Handles making calls to the standard API
+  /// In general you will not directly call this method, but should rather be called by the various
+  /// getter helper methods defined in this class.
+  Future _makeAPIKeyCall(String apiName) {
     Completer completer = new Completer();
     
     String query = _apiURL + _apiKey + "/" + apiName + "/q/" + _locQuery + ".json";
@@ -213,10 +258,10 @@ class WeatherUnderground {
           String body = data.join('');
           var parsedList = parse(body);
           if(parsedList['response']['error'] != null) {
-            if(parsedList['response']['error']['type'] == 'keynotfound') {
-              throw new KeyNotFound(parsedList['response']['error']['description']);
-            } else if(parsedList['response']['error']['type'] == 'querynotfound') {
-              throw new QueryNotFound(parsedList['response']['error']['description']);
+            if(parsedList['response']['error']['type'] == 'KeyNotFoundException') {
+              throw new KeyNotFoundException(parsedList['response']['error']['description']);
+            } else if(parsedList['response']['error']['type'] == 'QueryNotFoundException') {
+              throw new QueryNotFoundException(parsedList['response']['error']['description']);
             } else {
               throw new UnknownException(); 
             }
