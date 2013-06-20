@@ -38,8 +38,9 @@ For now, the following exceptions may be thrown:
 - Include code samples in documentation
 
 ### Change Log
-- 0.1.5 (not yet released)
-    - Added code comments and verified proper generation by the Dartdoc generator    
+- 0.1.5
+    - Added code comments and verified proper generation by the Dartdoc generator
+    - Fixed bone headed exception handling    
 - 0.1.4
     - Added timeout functionality to handle requests that never come back
     - Autocomplete API implemented

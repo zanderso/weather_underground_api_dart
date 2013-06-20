@@ -258,12 +258,12 @@ class WeatherUnderground {
           String body = data.join('');
           var parsedList = parse(body);
           if(parsedList['response']['error'] != null) {
-            if(parsedList['response']['error']['type'] == 'KeyNotFoundException') {
-              throw new KeyNotFoundException(parsedList['response']['error']['description']);
-            } else if(parsedList['response']['error']['type'] == 'QueryNotFoundException') {
-              throw new QueryNotFoundException(parsedList['response']['error']['description']);
+            if(parsedList['response']['error']['type'] == 'keynotfound') {
+              completer.completeError(new KeyNotFoundException(parsedList['response']['error']['description']));
+            } else if(parsedList['response']['error']['type'] == 'querynotfound') {
+              completer.completeError(new QueryNotFoundException(parsedList['response']['error']['description']));
             } else {
-              throw new UnknownException(); 
+              completer.complete(new UnknownException()); 
             }
           } else {
             String dataKey = parsedList['response']['features'].keys.first; 
