@@ -52,7 +52,6 @@ class WeatherUnderground {
   static const _autocompleteURL= "http://autocomplete.wunderground.com/";
   String _apiKey;
   String _locQuery;
-  HttpClient _client;
   int _timeout;
   
   Map _apiMap = {'alerts': 'alerts',
@@ -94,7 +93,6 @@ class WeatherUnderground {
     locationQuery = locationQuery == null ? "" : locationQuery;
     _apiKey = apiKey;
     setLocationQuery(locationQuery);
-    _client = new HttpClient();
     _timeout = 2000;
   }
   
