@@ -1,4 +1,4 @@
-import "package:weather_underground_api/weather_underground_api.dart";
+import "../lib/weather_underground_api_io.dart";
 import "dart:collection";
 
 WeatherUnderground wu;
@@ -7,15 +7,16 @@ void main() {
   print("WeatherUnderground Tests!");
    
   // You will need to place your own weather undergound API key in place of the x's
-  wu = new WeatherUnderground("xxx", "84096");
+  wu = new WeatherUnderground("xxx", "37.776289,-122.395234");
   wu.setTimeout(1900);
 
-  wu.getAutocomplete("Salt Lake City").then((var val) {
+  wu.getAutocomplete("Sunnyvale, CA").then((var val) {
     print(val.toString());
   });
   
   wu.getConditions().then((var val) {
-    print(val.toString());
+    print(val['temp_c']);
+    print(val['relative_humidity']);
   }).catchError((e) {
     print("An error occurred: ${e.toString()}");
   });

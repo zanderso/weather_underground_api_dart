@@ -1,37 +1,51 @@
-library weather_underground_api;
+library weather_underground_api_html;
 
-import "dart:io";
-import "dart:json";
+import "dart:html";
+import "dart:convert";
 import "dart:async";
 
 class QueryNotFoundException implements Exception {
   final String msg;
   const QueryNotFoundException([this.msg]);
-  String toString() => msg == null ? 'QueryNotFoundException' : 'QueryNotFoundException: ${msg}';
+  String toString() =>
+      (msg == null) ? "QueryNotFoundException"
+                    : "QueryNotFoundException: ${msg}";
 }
 
+
+// "
 class KeyNotFoundException implements Exception {
   final String msg;
   const KeyNotFoundException([this.msg]);
-  String toString() => msg == null ? 'KeyNotFoundException' : 'KeyNotFoundException: ${msg}';
+  String toString() =>
+      msg == null ? "KeyNotFoundException"
+                  : "KeyNotFoundException: ${msg}";
 }
 
+
+// "
 class UnknownException implements Exception {
   final String msg;
   const UnknownException([this.msg]);
-  String toString() => msg == null ? 'UnknownException' : 'UnknownException: ${msg}';
+  String toString() =>
+      (msg == null) ? "UnknownException" :
+                      "UnknownException: ${msg}";
 }
 
+
+// "
 class TimeoutException implements Exception {
   final String msg;
   const TimeoutException([this.msg]);
-  String toString() => msg == null ? 'TimeoutException' : 'TimeoutException: ${msg}';
+  String toString() =>
+      (msg == null) ? "TimeoutException"
+                    : "TimeoutException: ${msg}";
 }
 
 /**
  * Interface to the WeatherUnderground API.
  * 
- * This class implements an interface to the WeatherUnderground API defined at http://www.wunderground.com/weather/api/d/docs.
+ * This class implements an interface to the WeatherUnderground API defined at http://www.wunderground.com/weather/api/d/docs."
  */
 class WeatherUnderground {
   static const _apiURL= "http://api.wunderground.com/api/";
@@ -222,23 +236,17 @@ class WeatherUnderground {
   } 
   
   /// Handles making the call to the autocomplete API
-  /// Takes one required paramter representing the string to search on.
+  /// Takes one required parameter representing the string to search on.
   Future getAutocomplete(String acquery) {
     Completer completer = new Completer();
     
     String query = _autocompleteURL + "aq?query=" + acquery;        
-    
-    _client.getUrl(Uri.parse(query))
-      .then((HttpClientRequest request) {
-        return request.close();
-      })
-      .then((HttpClientResponse response) {
-        response.transform(new StringDecoder()).toList().then((data) {          
-          String body = data.join('');
-          var parsedList = parse(body);
-          completer.complete(parsedList['RESULTS']);
-        });        
-      });
+
+    HttpRequest.getString(query).then((responseText) {
+      var parsedJson = JSON.decode(responseText);
+      completer.complete(parsedJson['RESULTS']);
+    });
+
     return timeout(completer.future, _timeout);
   }
   
@@ -249,28 +257,23 @@ class WeatherUnderground {
     Completer completer = new Completer();
     
     String query = _apiURL + _apiKey + "/" + apiName + "/q/" + _locQuery + ".json";
-    _client.getUrl(Uri.parse(query))
-      .then((HttpClientRequest request) {
-        return request.close();
-      })
-      .then((HttpClientResponse response) {
-        response.transform(new StringDecoder()).toList().then((data) {          
-          String body = data.join('');
-          var parsedList = parse(body);
-          if(parsedList['response']['error'] != null) {
-            if(parsedList['response']['error']['type'] == 'keynotfound') {
-              completer.completeError(new KeyNotFoundException(parsedList['response']['error']['description']));
-            } else if(parsedList['response']['error']['type'] == 'querynotfound') {
-              completer.completeError(new QueryNotFoundException(parsedList['response']['error']['description']));
-            } else {
-              completer.complete(new UnknownException()); 
-            }
-          } else {
-            String dataKey = parsedList['response']['features'].keys.first; 
-            completer.complete(parsedList[_apiMap[dataKey]]);
-          }
-        });        
-      });
+
+    HttpRequest.getString(query).then((responseText) {
+      var parsedList = JSON.decode(responseText);
+      if(parsedList['response']['error'] != null) {
+        if(parsedList['response']['error']['type'] == 'keynotfound') {
+          completer.completeError(new KeyNotFoundException(parsedList['response']['error']['description']));
+        } else if(parsedList['response']['error']['type'] == 'querynotfound') {
+          completer.completeError(new QueryNotFoundException(parsedList['response']['error']['description']));
+        } else {
+          completer.complete(new UnknownException()); 
+        }
+      } else {
+        String dataKey = parsedList['response']['features'].keys.first; 
+        completer.complete(parsedList[_apiMap[dataKey]]);
+      }
+    });
+
     return timeout(completer.future, _timeout);
   }
 }
